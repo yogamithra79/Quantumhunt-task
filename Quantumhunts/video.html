@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Merged Video</title>
+  <!-- Video.js library -->
+  <link href="https://vjs.zencdn.net/7.11.4/video-js.css" rel="stylesheet" />
+  <script src="https://vjs.zencdn.net/7.11.4/video.js"></script>
+</head>
+<body>
+
+<video id="mergedVideo" class="video-js vjs-default-skin" controls preload="auto" width="640" height="264">
+  <source src="C:\Users\yogam\OneDrive\Desktop\Quantumhunts\WhatsApp Video 2023-11-12 at 9.49.51 PM.mp4" type="video/mp4">
+  <source src="C:\Users\yogam\OneDrive\Desktop\Quantumhunts\WhatsApp Video 2023-11-12 at 10.00.48 PM.mp4" type="video/mp4">
+</video>
+
+<script>
+  // Initialize Video.js
+  var player = videojs('mergedVideo');
+
+  // Play file1 first
+  player.on('ended', function() {
+    // Switch to file2 when file1 ends
+    player.src('WhatsApp Video 2023-11-12 at 10.00.48 PM.mp4');
+    player.play();
+  });
+</script>
+
+</body>
+</html>

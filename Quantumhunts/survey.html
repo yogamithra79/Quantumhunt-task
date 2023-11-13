@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Survey Form</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://unpkg.com/jquery@3.6.0/dist/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <!-- Survey.js library -->
+  <link href="https://surveyjs.azureedge.net/1.7.25/survey.css" type="text/css" rel="stylesheet"/>
+  <script src="https://surveyjs.azureedge.net/1.7.25/survey.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <div id="surveyContainer"></div>
+</div>
+
+<script>
+  Survey.StylesManager.applyTheme("bootstrap");
+
+  var surveyJSON = {
+    title: "Simple Survey",
+    pages: [
+      {
+        questions: [
+          { type: "text", name: "name", title: "Your Name:" },
+          { type: "dropdown", name: "age", title: "Your Age:", choices: ["18-24", "25-34", "35-44", "45+"] },
+          { type: "radiogroup", name: "feedback", title: "How satisfied are you with this survey?", choices: ["Very Satisfied", "Satisfied", "Neutral", "Dissatisfied", "Very Dissatisfied"] }
+        ]
+      }
+    ]
+  };
+
+  var survey = new Survey.Model(surveyJSON);
+  survey.onComplete.add(sendDataToServer);
+
+  survey.render("surveyContainer");
+
+  function sendDataToServer(survey) {
+    // Send survey data to your server
+    var surveyData = survey.data;
+
+    // AJAX call to save data to your backend
+    $.ajax({
+      type: "POST",
+      url: "https://your-heroku-app.herokuapp.com/save-survey",
+      data: JSON.stringify(surveyData),
+      contentType: "application/json",
+      success: function () {
+        // Survey data saved successfully
+        alert("Survey completed! Thank you.");
+        // You can also trigger an email here
+        sendCompletionEmail();
+      },
+      error: function () {
+        alert("Error saving survey data. Please try again.");
+      }
+    });
+  }
+
+  function sendCompletionEmail() {
+    // Implement email sending logic here
+    // You may use a service like SendGrid or any other email service
+    // Example: You can make another AJAX call to a server endpoint that sends the completion email
+    $.ajax({
+      type: "POST",
+      url: "https://your-heroku-app.herokuapp.com/send-email",
+      success: function () {
+        console.log("Completion email sent successfully.");
+      },
+      error: function () {
+        console.log("Error sending completion email.");
+      }
+    });
+  }
+</script>
+
+</body>
+</html>
